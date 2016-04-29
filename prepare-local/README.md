@@ -25,7 +25,7 @@ Virtualbox, Vagrant and Ansible
         $ git clone --recursive https://github.com/ansible/ansible.git
         $ cd ansible
         $ git checkout stable-2.0.0.1
-        $ git submodule update
+        $ git submodule update --init
 
   - source the setup script to make Ansible available on this terminal session:
 
