@@ -54,11 +54,17 @@
 
     - name: making docker daemon listen to port 55555
       lineinfile:
-        dest: /etc/default/docker
-        line: DOCKER_OPTS="--host=unix:///var/run/docker.sock --host=tcp://0.0.0.0:55555"
-        regexp: '^#?DOCKER_OPTS=.*$'
+        dest: /lib/systemd/system/docker.service 
+        line: ExecStart=/usr/bin/docker daemon -H fd:// -H tcp://0.0.0.0:55555 -H unix:///var/run/docker.sock
+        regexp: '^ExecStart.*$'
         state: present
       register: docker_opts
+
+    - name: installing docker-machine 
+      shell: curl -sSL -o /usr/local/bin/docker-machine https://github.com/docker/machine/releases/download/v0.7.0/docker-machine-`uname -s`-`uname -m` && sudo chmod +x /usr/local/bin/docker-machine
+      args:
+        executable: /bin/bash 
+        creates: /usr/local/bin/docker-machine
 
     - name: restarting docker daemon, if needed
       service:
