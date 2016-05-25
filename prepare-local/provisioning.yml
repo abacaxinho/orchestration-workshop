@@ -59,6 +59,11 @@
         regexp: '^ExecStart.*$'
         state: present
       register: docker_opts
+      notify:
+      - reload systemd
+
+    - name : reload systemd
+      command: systemctl daemon-reload
 
     - name: installing docker-machine 
       shell: curl -sSL -o /usr/local/bin/docker-machine https://github.com/docker/machine/releases/download/v0.7.0/docker-machine-`uname -s`-`uname -m` && sudo chmod +x /usr/local/bin/docker-machine
